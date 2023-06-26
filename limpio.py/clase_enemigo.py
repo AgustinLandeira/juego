@@ -1,0 +1,80 @@
+
+from listas import *
+from pantalla_original import *
+
+
+class enemigo:
+    def __init__(self,x,y,velocidad,lista_recibida,derecha,limite_izquierda,limite_derecha):
+        
+        self.rectangulo = lista_recibida[0].get_rect()
+        self.rectangulo.x = x
+        self.rectangulo.y = y
+        self.velocidad = velocidad
+        self.direccion_derecha = derecha[0]
+        self.direccion_izquierda = lista_recibida[0]
+        self.limite_izquierda = limite_izquierda
+        self.limite_derecha = limite_derecha
+        self.bandera = False
+        self.direccion = "ninguna"
+    
+    def obtener_diccionario(self):
+        return{
+            'rectangulo': self.rectangulo,
+            'velocidad': self.velocidad,
+            'direccion_izquierda':self.direccion_izquierda,
+            'direccion_derecha': self.direccion_derecha,
+            'limite_derecha': self.limite_derecha,
+            'limite_izquierda': self.limite_izquierda,
+            'bandera': self.bandera,
+            'direccion': self.direccion,
+            'lados': obtener_rectangulos(self.rectangulo)  
+        }
+        
+class proyectil:
+    def  __init__(self,ancho,alto,x,y,velocidad,path,limite,personaje):
+        
+        self.superficie = pygame.image.load(path)
+        self.superficie = pygame.transform.scale(self.superficie,(ancho,alto))
+        self.rectangulo = self.superficie.get_rect()
+        self.rectangulo.x = x
+        self.rectangulo.y = y
+        self.lados = obtener_rectangulos(self.rectangulo)
+        self.velocidad = velocidad
+        self.limite = limite
+        self.personaje = personaje
+
+    
+    def obtener_diccionario(self):
+        return {
+            "personaje": self.personaje,
+            "superficie": self.superficie,
+            "rectangulo": self.rectangulo,
+            "lados": self.lados,
+            "velocidad": self.velocidad,
+            "limite": self.limite
+            
+            
+        }
+
+class jefe:
+    def __init__(self,x,y,velocidad,lista_recibida,derecha,limite_izquierda,limite_derecha):
+        
+        self.rectangulo = lista_recibida[0].get_rect()
+        self.rectangulo.x = x
+        self.rectangulo.y = y
+        self.velocidad = velocidad
+        self.direccion_derecha = derecha[0]
+        self.direccion_izquierda = lista_recibida[0]
+        self.limite_izquierda = limite_izquierda
+        self.limite_derecha = limite_derecha
+        self.bandera = False
+        self.direccion = "ninguna"
+        self.aumento_velocidad = False
+    
+
+        
+                   
+        
+
+        
+        
