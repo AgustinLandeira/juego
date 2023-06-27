@@ -2,6 +2,7 @@ import pygame,sys
 from POO import *
 from sonido import *
 from listas import *
+import time
 
 def agregar_vida(lista_vidas,sonic):
     if len(lista_vidas) < 3:
@@ -53,7 +54,6 @@ def aplicar_gravedad(pantalla,personaje_animacion,lados_personaje:pygame.Rect,pi
             break 
         
         elif lados_personaje["top"].colliderect(plataforma["bottom"]):
-            print("colisiono con la parte de abajo")
            
             desplazamiento_y = 2
             break       
@@ -102,7 +102,7 @@ def animar_personaje(pantalla,lados_del_personaje,accion_personaje,sonic):
 def actualizar_pantalla(pantalla,que_hace,sonic,fondo,plataformas,plataformas_creadas,lados_personaje,
                         lista_vidas,tiempo):
     
-    global esta_saltando,esta_cayendo,desplazamiento_y
+    global esta_saltando,esta_cayendo,desplazamiento_y,ultima_colision,retraso_colision
     
     colision = False
     
@@ -114,9 +114,15 @@ def actualizar_pantalla(pantalla,que_hace,sonic,fondo,plataformas,plataformas_cr
     
     if que_hace == "muriendo":
         
-        mover_personaje(lados_personaje,sonic.velocidad,True)
-        sacar_vida(lista_vidas)
-        crear_sonido_coalicion_anillo("recursos de mi juego\sonidos\daño.wav",1)
+        tiempo_actual = time.time()
+        
+        if tiempo_actual - ultima_colision >= retraso_colision:
+        
+            mover_personaje(lados_personaje,sonic.velocidad,True)
+            sacar_vida(lista_vidas)
+            crear_sonido_coalicion_anillo("recursos de mi juego\sonidos\daño.wav",1)
+            
+            ultima_colision = tiempo_actual
         
     elif que_hace == "derecha":
         
@@ -193,6 +199,12 @@ desplazamiento_y = 0
 esta_saltando = False
 esta_cayendo = False
 ###########
+
+### tiempo entre colisiones ####
+
+ultima_colision = 0
+retraso_colision = 2.0
+
 
 personaje_corriendo_izquierda = girar_imagenes(personaje_corriendo,True,False)
 personaje_quieto_izquierda = girar_imagenes(personaje_quieto,True,False)

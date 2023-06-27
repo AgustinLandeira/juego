@@ -12,7 +12,7 @@ from actualizar_anillos import *
 
 w,h = 1200,600
 
-fps = 250 
+fps = 200 
 
 pygame.init()
 
@@ -132,7 +132,10 @@ enemigos.append(bombardero3.obtener_diccionario())
 tirador = enemigo(800,160,5,pistolero_izquierda,pistolero_izquierda,700,900)
 enemigos.append(tirador.obtener_diccionario())
 
+#BOSSS
+lista_boss = []
 boss = jefe(950,350,20,the_boss_izquierda,the_boss,5,1000)
+lista_boss.append(boss.atributos_bosss())
 
 #DISPAROS
 lista_proyectiles = []
@@ -171,9 +174,16 @@ lista_vacia = False
 
 #VIDAS
 lista_vidas = []
+
 for i in range(3):
     una_vida = sonic.obtener_vidas()
     lista_vidas.append(una_vida)
+
+vidas_boss = []
+
+for i in range(4):
+    una_vida_boss = boss.obtener_vidas()
+    vidas_boss.append(una_vida_boss)
 
 #eventos
 tick = pygame.USEREVENT + 0 # se crea el evento
@@ -243,7 +253,7 @@ while running:
                             lista_vidas,tiempo)
         
         actualizar_enemigo(enemigos,pantalla)
-        actualizar_boss(pantalla,boss,segundos)
+        actualizar_boss(pantalla,boss,segundos,vidas_boss,lados_personaje,lista_boss)
         
         disparo(lista_proyectiles,pantalla,lados_personaje,sonic,lista_vidas,lista_de_bombarderos)
         
@@ -253,7 +263,7 @@ while running:
         
         if get_mode():
             
-            mostrar_lados_2(lista_lados,enemigos,lados_personaje,lados_primer_trampa,listas_trampas,pantalla)
+            mostrar_lados_3(lista_lados,enemigos,lados_personaje,listas_trampas,pantalla,lista_boss)
                     
         text = font.render(f"Tiempo: {segundos} segundos", True, ("red"))
         

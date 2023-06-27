@@ -100,54 +100,100 @@ def disparo(lista_proyectiles,pantalla,lados_personaje,sonic,lista_vidas,bombard
                 sacar_vida(lista_vidas)
                 crear_sonido_coalicion_anillo("recursos de mi juego\sonidos\daño.wav",1)
                 
-def actualizar_boss(pantalla,boss,segundos):
+def actualizar_boss(pantalla,boss,segundos,vidas_boss,lados_personaje,lista_boss):
     
-    mover_boss(pantalla,boss,segundos)
+    crear_vida_boss(pantalla,vidas_boss)
+    mover_boss(pantalla,boss,segundos,lados_personaje,lista_boss)
 
-def mover_boss(pantalla,boss,segundos):
+def mover_boss(pantalla,boss,segundos,lados_personaje,lista_boss):
     
+    colisiono = False
     
-    if boss.rectangulo.x > boss.limite_izquierda and boss.bandera == False:
+    for malo in lista_boss:
         
-        boss.rectangulo.x -= boss.velocidad
-        boss.direccion = "izquierda"
-    else:
-        boss.bandera = True
-    
-    if boss.rectangulo.x < boss.limite_derecha and boss.bandera == True:
-        
-        boss.rectangulo.x += boss.velocidad
-        boss.direccion = "derecha"
-    else:
-        boss.bandera = False
-        
-    if boss.direccion == "izquierda":
-        if boss.aumento_velocidad != True:
-            animar_enemigo(pantalla,boss.direccion_izquierda,boss.rectangulo)
+        if malo["rectangulo"].x > malo["limite_izquierda"] and malo["bandera"] == False:
+            
+            for lado in malo["lados"]:
+                malo["lados"][lado].x -= malo["velocidad"]
+      
+            malo["direccion"]= "izquierda"
+            
         else:
-            animar_enemigo(pantalla,boss_mas_velocidad_izquierda[0],boss.rectangulo)
+            malo["bandera"] = True
         
-    elif boss.direccion == "derecha":
-        if boss.aumento_velocidad != True:
-            animar_enemigo(pantalla,boss.direccion_derecha,boss.rectangulo)
+        if malo["rectangulo"].x < malo["limite_derecha"] and malo["bandera"] == True:
+            
+            for lado in malo["lados"]:
+                malo["lados"][lado].x += malo["velocidad"]
+   
+            malo["direccion"] = "derecha"
+            
         else:
-            animar_enemigo(pantalla,boss_mas_velocidad[0],boss.rectangulo)
-    
-    if segundos >=10 and segundos <15 or segundos >= 26 and segundos < 50:
-        boss.velocidad = 60
-        boss.aumento_velocidad = True
+            malo["bandera"] = False
+            
+        if malo["direccion"] == "izquierda":
+            
+            if malo["aumento_velocidad"] != True:
+                
+                animar_enemigo(pantalla,malo["direccion_izquierda"],malo["rectangulo"])
+                
+            else:
+                animar_enemigo(pantalla,boss_mas_velocidad_izquierda[0],malo["rectangulo"])
+            
+        elif malo["direccion"] == "derecha":
+            
+            if malo["aumento_velocidad"] != True:
+                
+                animar_enemigo(pantalla,malo["direccion_derecha"],malo["rectangulo"])
+                
+            else:
+                animar_enemigo(pantalla,boss_mas_velocidad[0],malo["rectangulo"])
         
-    else:
-        boss.velocidad = 20
-        boss.aumento_velocidad = False
-    
+        if segundos >=10 and segundos <15 or segundos >= 26 and segundos < 50:
+            
+            malo["velocidad"] = 60
+            malo["aumento_velocidad"] = True
+            
+        else:
+            malo["velocidad"] = 20
+            malo["aumento_velocidad"] = False
+        
+        colisiono = verificar_coalicion_con_boss(lista_boss,lados_personaje,colisiono)
 
+    
+def crear_vida_boss(pantalla,vidas_boss):
+    
+    for vida in vidas_boss:
+        pantalla.blit(vida["superficie_vida"],(vida["posicion_x"],vida["posicion_y"]))
+        
+def verificar_coalicion_con_boss(lista_boss,lados_personaje,colisiono):
+    
+    for clave in lista_boss:
+        
+        if lados_personaje["bottom"].colliderect(clave["lados"]["top"]):
+            print("colisiono arriba")
+            colisiono = True
+            break
+            
+        
+        elif lados_personaje["main"].colliderect(clave["lados"]["left"]):
+            print("colisiono con la parte izquierda del jefe")
+            colisiono = True
+            break
+            
+            
+    return colisiono
+    
+            
+            
 
     
                 
                     
     ###################################################################3
 
+
+        
 
 pez_mirando_derecha = girar_imagenes(personaje_enemigo,True,False)
 cangrejo_derecha = girar_imagenes(cangrejo,True,False)

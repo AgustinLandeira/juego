@@ -31,9 +31,7 @@ class personaje:
             "posicion_x": self.rectangulo_vida.x,
             "posicion_y": self.rectangulo_vida.y
         }
-    
-    
-           
+                  
 class plataforma:
     def __init__(self,path,ancho,alto,x,y):
         self.plataforma = pygame.image.load(path)
