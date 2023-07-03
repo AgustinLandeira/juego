@@ -1,52 +1,80 @@
 import pygame
-import time
+
 
 pygame.init()
 
-def crear_sonido_fondo(path,duracion,volumen):
-    
+def crear_sonido_fondo(path:str,duracion:int,volumen:float):
+    """
+    reproduce un sonido de fondo mientras el jugador juega
+    parametros: recibe el path que seria el sonido a reporducir,duracion del sonido y volumen
+    """
     pygame.mixer.music.load(path)
     pygame.mixer.music.play(duracion)
     pygame.mixer.music.set_volume(volumen)
         
-def crear_sonido_coalicion_anillo(path,duracion):
+def crear_sonido_coalicion_anillo(path:str):
+    """
+    reproduce un efecto de sonido cuando el jugador agarra un anillo
+    parametro: recibe el path que seria el audio a reproducir  
+    """
 
     sonido_colision = pygame.mixer.Sound(path)
-    sonido_colision.play(duracion)
+    sonido_colision.play(0)
     
     
-def sonido_saltando(path,duracion):
+def sonido_saltando(path:str):
     
-    primera_vuelta = False
+    """
+    reproduce un efecto de sonido cuando el jugador agarra un anillo
+    parametro: recibe el path que seria el audio a reproducir     
+    """
     
-    if primera_vuelta == False:
-        ultima_produccion = 0
-        retraso_sonido = 2
-    
-    tiempo_actual = time.time()
-    
-    if tiempo_actual - ultima_produccion >= retraso_sonido:
-           
-        sonido_colision = pygame.mixer.Sound(path)
-        sonido_colision.play(duracion)
-        primera_vuelta = True
-        ultima_produccion = tiempo_actual
-    
-def sonido_advertencia(path,duracion):
-    
-    primera_vuelta = False
-    
-    if primera_vuelta == False:
-        ultima_produccion = 0
-        retraso_sonido = 3.0
-    
-    tiempo_actual = time.time()
-    
-    if tiempo_actual - ultima_produccion >= retraso_sonido:
+    sonido_colision = pygame.mixer.Sound(path)
+    sonido_colision.play(0)
         
-        sonido_colision = pygame.mixer.Sound(path)
-        sonido_colision.play(duracion)
-        primera_vuelta = True
-        ultima_produccion = tiempo_actual
- 
+    
+def sonido_advertencia(path:str):
+    """
+    reproduce un efecto de sonido cuando el jugador quiere cruzar un limite o pasar una plataforma
+    parametro: recibe el path que seria el audio a reproducir     
+    """
+    
+    sonido_colision = pygame.mixer.Sound(path)
+    sonido_colision.play(0)
+
+def sonido_daño(path:str):
+    """
+    reproduce un efecto de sonido cuando el jugador recibe daño de un enemigo o proyectil
+    parametro: recibe el path que seria el audio a reproducir     
+    """
+    
+    sonido_colision = pygame.mixer.Sound(path)
+    sonido_colision.play(0) 
+    
+def daño_del_boss(path:str):
+    """
+    reproduce un efecto de sonido cuando el jugador recibe daño del boss
+    parametro: recibe el path que seria el audio a reproducir     
+    """
+    
+    sonido_colision = pygame.mixer.Sound(path)
+    sonido_colision.play(0)
+
+def muerte_boss(path:str):
+    """
+    reproduce un efecto de sonido cuando el boss muere
+    parametro: recibe el path que seria el audio a reproducir     
+    """
+   
+    sonido_colision = pygame.mixer.Sound(path)
+    sonido_colision.play(0)
+
+def daño_al_boss(path:str):
+    """
+    reproduce un efecto de sonido cuando el boss recibe daño del personaje
+    parametro: recibe el path que seria el audio a reproducir     
+    """
+   
+    sonido_colision = pygame.mixer.Sound(path)
+    sonido_colision.play(0)
 

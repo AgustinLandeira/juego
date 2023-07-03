@@ -57,9 +57,9 @@ class proyectil:
 class jefe:
     def __init__(self,x,y,velocidad,lista_recibida,derecha,limite_izquierda,limite_derecha):
         
-        self.rectangulo = lista_recibida[0].get_rect()
-        self.rectangulo.x = x
-        self.rectangulo.y = y
+        self.rectangulo_boss = lista_recibida[0].get_rect()
+        self.rectangulo_boss.x = x
+        self.rectangulo_boss.y = y
         self.velocidad = velocidad
         self.direccion_derecha = derecha[0]
         self.direccion_izquierda = lista_recibida[0]
@@ -75,7 +75,7 @@ class jefe:
         self.rectangulo_vida.y = 70
 
     def obtener_vidas(self):
-        self.rectangulo.x +=30
+        self.rectangulo_vida.x += 30
         return{
             "superficie_vida": self.superficie_vida,
             "rectangulo_vida": self.rectangulo_vida,
@@ -86,7 +86,7 @@ class jefe:
     def atributos_bosss(self):
         
         return{
-            'rectangulo': self.rectangulo,
+            'rectangulo': self.rectangulo_boss,
             'velocidad': self.velocidad,
             'direccion_izquierda':self.direccion_izquierda,
             'direccion_derecha': self.direccion_derecha,
@@ -94,7 +94,7 @@ class jefe:
             'limite_izquierda': self.limite_izquierda,
             'bandera': self.bandera,
             'direccion': self.direccion,
-            'lados': obtener_rectangulos(self.rectangulo),
+            'lados': obtener_rectangulos(self.rectangulo_boss),
             'aumento_velocidad': self.aumento_velocidad
             
 

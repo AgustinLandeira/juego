@@ -9,10 +9,11 @@ from actualizar_enemigo import *
 from sonido import *
 from clase_anillo import *
 from actualizar_anillos import *
+from crear_objetos_enem import *
 
 w,h = 1200,600
 
-fps = 150 
+fps = 20 
 
 pygame.init()
 
@@ -38,7 +39,7 @@ pantalla.blit(fondo,(0,0))
 #SONIDO PARA EL FONDO
 crear_sonido_fondo("recursos de mi juego\sonidos\sonic-gumball.mp3",-1,0.1)
 
-#PERSONAJE
+#PERSONAJE   
 
 lista_animaciones = [personaje_quieto,personaje_quieto_izquierda,personaje_corriendo,
                     personaje_corriendo_izquierda,personaje_saltando,personaje_saltando_izquierda,
@@ -46,9 +47,9 @@ lista_animaciones = [personaje_quieto,personaje_quieto_izquierda,personaje_corri
 
 reescalar_imagen(lista_animaciones,50,60) 
 
-sonic = personaje(h/2 - 120,465,20,0,-35,35,5)#h/2 - 250,460,20,0 
-que_hace = "quieto"
-posicion_Actual =0
+sonic = personaje(h/2 - 120,465,20,0,-35,35,5,"quieto")
+
+
 
 lados_personaje = obtener_rectangulos(sonic.rectangulo)
 
@@ -59,60 +60,14 @@ piso.top = sonic.rectangulo.bottom
 
 lados_piso = obtener_rectangulos(piso)
 
-#plataforma
-mi_plataforma = plataforma("recursos de mi juego\plataformas\\1_plataforma.png",300,75,430,410)
-mi_plataforma_dos = plataforma("recursos de mi juego\plataformas\\0.png",40,40,1050,380)
-mi_plataforma_tercera = plataforma("recursos de mi juego\plataformas\plataforma alta.png",150,210,830,317)
-mi_plataforma_cuatro = plataforma("recursos de mi juego\plataformas\\1_plataforma.png",550,50,1,200)
-mi_plataforma_cinco = plataforma("recursos de mi juego\plataformas\\0.png",50,50,700,190)
+##plataforma y trampas#
 
-#TRAMPAS
+lista_plataformas,plataformas_creadas,listas_trampas = crear_plataformas_nivel1(lados_piso)
 
-primer_trampa = plataforma("recursos de mi juego\enemigos-objetos\puas.png",230,70,980,459) 
-segunda_trampa = plataforma("recursos de mi juego\enemigos-objetos\puas.png",100,70,730,459)
 
-lados_mi_plataforma = obtener_rectangulos(mi_plataforma.rectangulo)
-lados_plataforma_dos = obtener_rectangulos(mi_plataforma_dos.rectangulo)
-lados_plataformas_tres = obtener_rectangulos(mi_plataforma_tercera.rectangulo)
-lados_plataforma_cuatro = obtener_rectangulos(mi_plataforma_cuatro.rectangulo)
-lados_plataforma_cinco = obtener_rectangulos(mi_plataforma_cinco.rectangulo)
-lados_primer_trampa = obtener_rectangulos(primer_trampa.rectangulo)
-lados_segunda_trampa = obtener_rectangulos(segunda_trampa.rectangulo)
+####ENEMIGOS#############################################################
 
-lista_plataformas = [lados_piso,lados_mi_plataforma,lados_plataforma_dos,lados_plataformas_tres,
-                    lados_plataforma_cuatro,lados_plataforma_cinco,lados_primer_trampa,
-                    lados_segunda_trampa]
-
-plataformas_creadas = [mi_plataforma,mi_plataforma_dos,mi_plataforma_tercera,mi_plataforma_cuatro,
-                    mi_plataforma_cinco,primer_trampa,segunda_trampa]
-
-listas_trampas = [lados_primer_trampa,lados_segunda_trampa]
-
-####ENEMIGOS#############################################################3
-
-enemigos = []
-
-lista_enemigos_animaciones = [personaje_enemigo,pez_mirando_derecha,cangrejo,cangrejo_derecha]
-reescalar_imagen(lista_enemigos_animaciones,40,35)
-
-pez_pinches = enemigo(300,430,10,personaje_enemigo,pez_mirando_derecha,20,300)
-enemigos.append(pez_pinches.obtener_diccionario())
-
-pez_pinches_dos = enemigo(312,110,12,personaje_enemigo,pez_mirando_derecha,5,300)
-enemigos.append(pez_pinches_dos.obtener_diccionario())
-
-pez_pinches_tres = enemigo(700,110,12,personaje_enemigo,pez_mirando_derecha,700,900)
-enemigos.append(pez_pinches_tres.obtener_diccionario())
- 
-mi_cangrejo = enemigo(436,375,15,cangrejo,cangrejo_derecha,436,600)
-enemigos.append(mi_cangrejo.obtener_diccionario())
-
-mi_cangrejo_dos = enemigo(310,165,10,cangrejo,cangrejo_derecha,10,400)
-enemigos.append(mi_cangrejo_dos.obtener_diccionario())
-
-mi_cangrejo_tres = enemigo(860,290,10,cangrejo,cangrejo_derecha,810,940)
-enemigos.append(mi_cangrejo_tres.obtener_diccionario())
-
+enemigos,lista_enemigos_animaciones = crear_enemigo_nivel1()
 
 #################################################################################
 
@@ -121,6 +76,7 @@ enemigos.append(mi_cangrejo_tres.obtener_diccionario())
 lista_anillos = crear_anillos("nivel uno")
 anillos_creados,items_creados = hacer_lluvia_objetos(30,5)
 lista_vacia = False
+
 #VIDAS
 lista_vidas = []
 for i in range(3):
@@ -157,16 +113,16 @@ while running:
         
         
         if (lista_eventos[pygame.K_RIGHT] and sonic.rectangulo.right < w - sonic.velocidad):
-            que_hace = "derecha"  
+            sonic.accion = "derecha"  
         
         elif  (lista_eventos[pygame.K_LEFT] and sonic.rectangulo.left >  20 ):
-            que_hace = "izquierda" 
+            sonic.accion = "izquierda" 
         
         elif (lista_eventos[pygame.K_UP]):
-            que_hace = "salta"
+            sonic.accion = "salta"
         
         else :
-            que_hace = "quieto" 
+            sonic.accion = "quieto" 
             
         pantalla.blit(fondo,(0,0))
         
@@ -174,17 +130,19 @@ while running:
         
         if murio == True:
             
-            que_hace = "muriendo"
+            sonic.accion = "muriendo"
             
         if segundos == 60:
             tiempo = "terminado"
             
             if sonic.puntaje > 300 and len(lista_vidas) > 0:
-                que_hace = "gano" 
+                sonic.accion = "gano"
+                crear_sonido_fondo("recursos de mi juego\sonidos\\victory-sonic.mp3",1,0.1) 
+                
             else:
-                que_hace = "perdio"  
+                sonic.accion = "perdio"  
            
-        actualizar_pantalla(pantalla,que_hace,sonic,fondo,lista_plataformas,plataformas_creadas,
+        actualizar_pantalla(pantalla,sonic,fondo,lista_plataformas,plataformas_creadas,
             lados_personaje,lista_vidas,tiempo)
                                                
         actualizar_enemigo(enemigos,pantalla)
@@ -229,9 +187,7 @@ while running:
         mensaje_final = fuente_final.render(f"YOU WIN",True,("white"))
         
         pantalla.blit(mensaje_final,(h/2 + 100, 200))
-        crear_sonido_fondo("recursos de mi juego\sonidos\\victory-sonic.mp3",1,0.1)
         
-         
     else:
         
         mensaje_final = fuente_final.render(f"YOU LOSE",True,("white"))
@@ -239,7 +195,8 @@ while running:
         pantalla.blit(mensaje_final,(h/2 + 100, 200))
         
     
-    pygame.display.flip()    
+    pygame.display.flip()
+        
 
 
 

@@ -2,7 +2,13 @@ from clase_anillo import *
 from sonido import * 
 import random
 
-def crear_anillos(nivel):
+def crear_anillos(nivel:str):
+    
+    """
+    ordena los anillos segun el ordenamiento que tenga la lista de cada nivel
+    parametro: recibe el tipo de nivel 1,2 o 3
+    """
+    
     lista_anillos = []
     if nivel == "nivel uno":
         
@@ -27,7 +33,7 @@ def crear_anillos(nivel):
             (8, 20, 20, 860, 50),#3
             (16, 20, 20, 1, 180),#4
             (17, 20, 20, 1, 140),#5
-            (18, 20, 20, 1, 100),#6
+            (18, 20, 20, 1, 80),#6
             (5, 20, 20, 580, 140),#7
             (5, 20, 20, 630, 140),#8
             (6, 20, 20, 1100, 100)#9
@@ -134,8 +140,12 @@ def crear_anillos(nivel):
 
     return lista_anillos    
 
-def animar_anillos(pantalla,lista_anillos,anillos,lista_items,item):
+def animar_anillos(pantalla:pygame.Surface,lista_anillos:list,anillos:list,lista_items:list,item:list):
     
+    """
+    blitea los anillos e items
+    parametro: pantalla en donde se va a blitear,una lista con anillos,lista de items
+    """
     global contador
     
     for ring in lista_anillos:
@@ -153,47 +163,68 @@ def animar_anillos(pantalla,lista_anillos,anillos,lista_items,item):
         
 contador = 0
 
-def verificar_coalicion(lista_anillos,lados_personaje,sonic,lista_items,lista_vidas):
+def verificar_coalicion(lista_anillos:list,lados_personaje:dict,sonic,lista_items:list,lista_vidas:list):
+    
+    """
+    verifica si hay una colision de items o anillos con el personaje y lo elimina
+    parametros: 
+    """   
         
-        for anillo in lista_anillos:
-            if lados_personaje["main"].colliderect(anillo["rectangulo"]):
-                lista_anillos.remove(anillo)
-                crear_sonido_coalicion_anillo("recursos de mi juego\sonidos\sonic.mp3",1)
-                sonic.puntaje += 10
-                
-            elif anillo["rectangulo"].y > 600:
-                lista_anillos.remove(anillo)
-                
+    for anillo in lista_anillos:
         
-        if sonic.puntaje == 100:
-            crear_sonido_coalicion_anillo("recursos de mi juego\sonidos\yes.wav",1)
-        
-        for item in lista_items:
+        if lados_personaje["main"].colliderect(anillo["rectangulo"]):
+            lista_anillos.remove(anillo)
+            crear_sonido_coalicion_anillo("recursos de mi juego\sonidos\sonic.mp3")
+            sonic.puntaje += 10
             
-            if lados_personaje["main"].colliderect(item["rectangulo"]):
-                lista_items.remove(item)
-                agregar_vida(lista_vidas,sonic)
-                
-            elif item["rectangulo"].y > 600:
-                lista_items.remove(item)
-                
+        elif anillo["rectangulo"].y > 600:
+            
+            lista_anillos.remove(anillo)
+            
+    
+    if sonic.puntaje == 100:
+        
+        crear_sonido_coalicion_anillo("recursos de mi juego\sonidos\yes.wav")
+    
+    for item in lista_items:
+        
+        if lados_personaje["main"].colliderect(item["rectangulo"]):
+            lista_items.remove(item)
+            agregar_vida(lista_vidas,sonic)
+            
+        elif item["rectangulo"].y > 600:
+            lista_items.remove(item)
+            
                 
 
-def mover_objeto(anillos_creados,lista_items):
+def mover_objeto(anillos_creados:list,lista_items:list):
+    
+    """
+    mueve los objetos ya sea anillos o items en el eje y
+    parametros: recibe dos listas
+    """
+    
     for anillo in anillos_creados:
+        
         rectangulo = anillo["rectangulo"]
         rectangulo.y += anillo["velocidad"]
     
     for item in lista_items:
+        
         rectangulo = item["rectangulo"]
         rectangulo.y += item["velocidad"]
 
-def hacer_lluvia_objetos(cantidad_anillos,cantidad_items):
+def hacer_lluvia_objetos(cantidad_anillos,cantidad_items)->list:
+    
+    """
+    se encarga de hacer la lluvia de anillos e items para que el personaje pueda agarrarlos
+    """
     
     anillos_creados = []
     items_creados = []
     
     for i in range(cantidad_anillos):
+        
         x = random.randrange(-200, 1400 )
         y = random.randrange(-200, 0 )
         
@@ -202,6 +233,7 @@ def hacer_lluvia_objetos(cantidad_anillos,cantidad_items):
         anillos_creados.append(diccionario)
     
     for i in range(cantidad_items):
+        
         x = random.randrange(-200, 1400 )
         y = random.randrange(-200, 0 )
         

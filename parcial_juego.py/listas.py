@@ -93,3 +93,7 @@ boss_mas_velocidad = [
     pygame.image.load("recursos de mi juego\enemigos-objetos\\fast_1.png")
     
 ]
+
+vida_perdida_boss = [
+    pygame.image.load("recursos de mi juego\enemigos-objetos\\boos_daño.png")
+    ]

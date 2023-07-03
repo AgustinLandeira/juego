@@ -1,9 +1,10 @@
-import pygame,sys
+import pygame
 from listas import *
 from pantalla_original import *
 
+
 class personaje:
-    def __init__(self,x_inicial,y_inicial,velocidad,puntaje,potencia_salto,limite_caida,gravedad):
+    def __init__(self,x_inicial,y_inicial,velocidad,puntaje,potencia_salto,limite_caida,gravedad,accion):
         
         self.x = x_inicial
         self.y = y_inicial
@@ -22,6 +23,7 @@ class personaje:
         self.potencia_salto = potencia_salto
         self.limite_velocidad_caida = limite_caida
         self.gravedad = gravedad
+        self.accion = accion
         
     def obtener_vidas(self):
         self.rectangulo_vida.x += 30
@@ -39,7 +41,7 @@ class plataforma:
         self.rectangulo = self.plataforma.get_rect()
         self.rectangulo.x = x
         self.rectangulo.y = y
-        self.lados = obtener_rectangulos(self.rectangulo)
+        self.lados  = obtener_rectangulos(self.rectangulo)
     
     
     
