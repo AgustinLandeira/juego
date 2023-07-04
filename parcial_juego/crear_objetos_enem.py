@@ -1,8 +1,14 @@
 
-from clase_enemigo import *
+from clases.clase_enemigo import enemigo
 from listas import *
 from actualizar_enemigo import *
-from POO import *
+from clases.clase_boss import jefe
+from clases.clase_proyectil import proyectil
+from clases.clase_plataforma import plataforma
+
+from pantalla_original import obtener_rectangulos
+from pantalla_original import girar_imagenes
+from pantalla_original import reescalar_imagen
 
 
 ##############PLATAFORMAS y tramas ############
@@ -324,9 +330,6 @@ def crear_boss():
     
     return lista_boss,boss    
 
-
-
-
 pez_mirando_derecha = girar_imagenes(personaje_enemigo,True,False)
 cangrejo_derecha = girar_imagenes(cangrejo,True,False)
 pelota_fuego_derecha = girar_imagenes(pelota_fuego,True,False)
@@ -336,3 +339,5 @@ pistolero_izquierda = girar_imagenes(pistolero,True,False)
 the_boss_izquierda = girar_imagenes(the_boss,True,False)
 boss_mas_velocidad_izquierda = girar_imagenes(boss_mas_velocidad,True,False)
 tirador_izquierda = girar_imagenes(pistolero,True,False)
+
+

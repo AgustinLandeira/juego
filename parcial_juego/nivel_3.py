@@ -1,14 +1,21 @@
 import pygame,sys
 
 from listas import *
-from POO import *
+
 from pantalla_original import *
 from modo import *
-from clase_enemigo import *
-from actualizar_enemigo import *
+
+from actualizar_enemigo import actualizar_enemigo
+from actualizar_enemigo import coalicion_enemigo
+
 from sonido import *
-from clase_anillo import *
+
 from actualizar_anillos import *
+
+from crear_objetos_enem import *
+
+from clases.clase_personaje import personaje
+
 
 w,h = 1200,600
 

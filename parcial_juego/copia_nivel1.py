@@ -1,5 +1,7 @@
 import pygame,sys
-from prueba1 import *
+from prueba1 import NivelUno
+from modo import *
+
 
 pygame.init()
 
@@ -40,15 +42,20 @@ while running:
     
     eventos = pygame.event.get()
     
-    for evento in eventos:
+    for evento in pygame.event.get():
         
         if evento.type == pygame.QUIT:
             pygame.quit()
             sys.exit(0)
+            runnin = False
+            
+        elif evento.type == pygame.KEYDOWN:
+            if evento.key == pygame.K_TAB:
+                cambiar_modo()
                 
     if tiempo != "terminado":
         
-        nivel_actual.update(eventos,tiempo,segundos,text,font)    
+        nivel_actual.update(tiempo,segundos,text,font,fuente_final)    
        
         pygame.display.update()
       

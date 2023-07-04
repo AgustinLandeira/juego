@@ -1,6 +1,11 @@
-from clase_anillo import *
-from sonido import * 
 import random
+import pygame
+#clase_anillo e item
+from clases.clase_anillo import anillo
+from clases.clase_item import item_vida
+from pantalla_original import agregar_vida
+from sonido import * 
+
 
 def crear_anillos(nivel:str):
     

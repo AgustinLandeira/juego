@@ -1,12 +1,12 @@
 import pygame
-def crear_plataforma(path,largo,alto,x,y):
+'''def crear_plataforma(path,largo,alto,x,y):
     plataforma = pygame.image.load(path)
     plataforma = pygame.transform.scale(plataforma,(largo,alto))
     rectangulo_plataforma = plataforma.get_rect()
     rectangulo_plataforma.x = x
     rectangulo_plataforma.y = y
     
-    return rectangulo_plataforma,plataforma
+    return rectangulo_plataforma,plataforma'''
 
 #
 '''plataforma = pygame.image.load("recursos de mi juego\plataformas\\1_plataforma.png")

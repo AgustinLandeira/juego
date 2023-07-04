@@ -1,21 +1,24 @@
 import pygame
-from modo import *
 import time
+
+
 from listas import *
 from sonido import *
 from pantalla_original import *
 from actualizar_enemigo import *
 from actualizar_anillos import *
+from modo import * 
+from prueba1 import *
 
 class Nivel:
     
     def __init__(self,pantalla,personaje_principal,lista_plataformas,imagen_fondo,lados_personaje,
                 plataformas_creadas,lista_trampas,enemigos,lista_enemigos_animaciones,lista_anillos
-                ,anillos_creados,items_creados,lista_vacia,lista_vidas):
+                ,anillos_creados,items_creados,lista_vacia,lista_vidas,lista_animaciones):
         
         self._slave = pantalla
         self.jugador = personaje_principal
-        self.plataformas = lista_plataformas
+        self.lista_plataformas = lista_plataformas
         self.img_fondo = imagen_fondo
         self.lados_personaje = lados_personaje
         self.plataformas_creadas = plataformas_creadas
@@ -27,18 +30,15 @@ class Nivel:
         self.items = items_creados
         self.lista_vacia = lista_vacia
         self.lista_vidas = lista_vidas
+        self.lista_animaciones = lista_animaciones
         
        
-    def update(self,lista_eventos,tiempo,segundos,text,font):
+    def update(self,tiempo,segundos,text,font,fuente_final):
         
-        for evento in lista_eventos:
-            if evento.type == pygame.KEYDOWN:
-                if evento.key == pygame.K_TAB:
-                    cambiar_modo()
+        lista_vacia = False
         
-        
-        self.leer_input(segundos)
-        self.actualizar_pantalla(tiempo,segundos)
+        self.leer_input(segundos,tiempo)
+        self.actualizar_pantalla(tiempo)
         
         actualizar_enemigo(self.enemigos,self._slave)
         
@@ -65,18 +65,18 @@ class Nivel:
         
         if lista_vacia  == True:
             
-            anillos_creados,items_creados = hacer_lluvia_objetos(35,2)
+            self.anillos_creados,self.items = hacer_lluvia_objetos(35,2)
             lista_vacia = False
     
-        verificar_coalicion(anillos_creados,self.lados_personaje,self.jugador,items_creados,self.lista_vidas)
+        verificar_coalicion(self.anillos_creados,self.lados_personaje,self.jugador,self.items,self.lista_vidas)
         
         if self.lista_vidas == []:
             
             tiempo = "terminado"
         
-        if segundos == 60 or self.lista_vidas == []:
-            pass
-            #mostrar_resultado()
+        elif segundos == 60 or self.lista_vidas == []:
+            self.mostrar_resultado(fuente_final)
+            tiempo = "terminado"
     
     def mover_personaje(self,velocidad,murio):
     
@@ -89,7 +89,7 @@ class Nivel:
             for lado in self.lados_personaje:
                 self.lados_personaje[lado].x = 600/2 - 250
     
-    def actualizar_pantalla(self,tiempo,segundos):
+    def actualizar_pantalla(self,tiempo):
         
         global esta_saltando,desplazamiento_y,ultima_colision,retraso_colision
     
@@ -97,10 +97,10 @@ class Nivel:
         
         self._slave.blit(self.img_fondo,(0,0))
         
-        for plataforma in self.plataformas:
-            plataforma.draw(self._slave,self.plataformas)
+        '''for plataforma in self.plataformas:
+            self._slave.blit(plataforma.rectangulo.x,plataforma.rectangulo.y)'''
         
-        self.jugador.update(self._slave,self.plataformas)
+        #self.jugador.update(self._slave,self.plataformas)
         self._slave.blit(self.img_fondo,(0,0)) 
         
         for objeto in self.plataformas_creadas:
@@ -115,7 +115,7 @@ class Nivel:
             
                 mover_personaje(self.lados_personaje,self.jugador.velocidad,True)
                 sacar_vida(self.lista_vidas)
-                crear_sonido_coalicion_anillo("recursos de mi juego\sonidos\daño.wav",1)
+                crear_sonido_coalicion_anillo("recursos de mi juego\sonidos\daño.wav")
                 
                 ultima_colision = tiempo_actual
             
@@ -125,12 +125,12 @@ class Nivel:
             
             if esta_saltando == False and tiempo != "terminado":
                 
-                animar_personaje(self._slave,self.lados_personaje["main"],personaje_corriendo,self.jugador)
+                animar_personaje(self._slave,self.lados_personaje["main"],self.lista_animaciones[2],self.jugador)
                 
-            for lado in self.plataformas:
+            for lado in self.lista_plataformas:
                 
                 if self.lados_personaje["right"].colliderect(lado["left"]):
-                    sonido_advertencia("recursos de mi juego\sonidos\\no.wav",1)
+                    sonido_advertencia("recursos de mi juego\sonidos\\no.wav")
                     colision = True
                     break
                 
@@ -144,11 +144,11 @@ class Nivel:
             self.jugador.direccion = "izquierda"
             
             if esta_saltando == False and tiempo != "terminado":
-                animar_personaje(self._slave,self.lados_personaje["main"],personaje_corriendo_izquierda,self.jugador)
+                animar_personaje(self._slave,self.lados_personaje["main"],self.lista_animaciones[3],self.jugador)
                 
-            for lado in self.plataformas:
+            for lado in self.lista_plataformas:
                 if self.lados_personaje["left"].colliderect(lado["right"]):
-                    sonido_advertencia("recursos de mi juego\sonidos\\no.wav",1)
+                    sonido_advertencia("recursos de mi juego\sonidos\\no.wav")
                     colision = True
                     break
                 
@@ -158,10 +158,11 @@ class Nivel:
         elif self.jugador.accion == "salta" and tiempo != "terminado" :
             
             if not esta_saltando:
+                
                 esta_saltando = True
                 desplazamiento_y = self.jugador.potencia_salto
                 
-                sonido_saltando("recursos de mi juego\sonidos\SN_Act008.wav",1)
+                sonido_saltando("recursos de mi juego\sonidos\SN_Act008.wav")
         
         elif self.jugador.accion == "gano":
             animar_personaje(self._slave,self.lados_personaje["main"],celebracion,self.jugador)
@@ -170,23 +171,25 @@ class Nivel:
             animar_personaje(self._slave,self.lados_personaje["main"],perdio,self.jugador)
                         
         elif esta_saltando == False and  tiempo != "terminado":
+            
             if self.jugador.direccion == "derecha":
                 
-                animar_personaje(self._slave,self.lados_personaje["main"],personaje_quieto,self.jugador)
+                animar_personaje(self._slave,self.lados_personaje["main"],self.lista_animaciones[0],self.jugador)
                 
             else: 
-                animar_personaje(self._slave,self.lados_personaje["main"],personaje_quieto_izquierda,self.jugador)
+                animar_personaje(self._slave,self.lados_personaje["main"],self.lista_animaciones[1],self.jugador)
                 
         if self.jugador.direccion == "derecha" and  tiempo != "terminado":
             
-            aplicar_gravedad(self._slave,personaje_saltando,self.lados_personaje,self.plataformas,self.jugador)
+            aplicar_gravedad(self._slave,self.lista_animaciones[4],self.lados_personaje,self.lista_plataformas,self.jugador)
         else:
             if tiempo != "terminado":
-                aplicar_gravedad(self._slave,personaje_saltando_izquierda,self.lados_personaje,self.plataformas,self.jugador)
+                
+                aplicar_gravedad(self._slave,self.lista_animaciones[5],self.lados_personaje,self.lista_plataformas,self.jugador)
             
         vidas_personaje(self.lista_vidas,self._slave)
     
-    def leer_input(self,segundos):
+    def leer_input(self,segundos,tiempo):
         
         lista_eventos = pygame.key.get_pressed()
 
@@ -217,12 +220,12 @@ class Nivel:
             else:
                 self.jugador.accion = "perdio"
     
-    def dibujar_rectangulos(self,lista_plataformas,enemigos,lados_personaje,listas_trampas):
+    def dibujar_rectangulos(self):
         
-        if get_mode():
-            mostrar_lados_1(lista_plataformas,enemigos,lados_personaje,listas_trampas,self._slave)
+        mostrar_lados_1(self.lista_plataformas,self.enemigos,self.lados_personaje,self.lista_trampas,self._slave)
 
     def mostrar_resultado(self,fuente_final):
+        
         if self.jugador.puntaje > 300 and len(self.lista_vidas) > 0:
         
             mensaje_final = fuente_final.render(f"YOU WIN",True,("white"))

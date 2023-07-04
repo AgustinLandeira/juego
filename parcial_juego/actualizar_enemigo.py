@@ -1,7 +1,8 @@
 
 from pantalla_original import *
 from listas import *
-from crear_objetos_enem import *
+#from crear_objetos_enem import *
+#from imagenes_giradas import *
 import time
 
 def coalicion_enemigo(lista_enemigo:list,lados_personaje:dict,lados_trampas:dict)->bool:
@@ -299,3 +300,14 @@ def eliminar_boss(lista_boss:list):
 
 ultima_colision = 0
 retraso_colision = 4.0
+
+pez_mirando_derecha = girar_imagenes(personaje_enemigo,True,False)
+cangrejo_derecha = girar_imagenes(cangrejo,True,False)
+pelota_fuego_derecha = girar_imagenes(pelota_fuego,True,False)
+pez_nivel2_derecha = girar_imagenes(pez_nivel2,True,False)
+orbinaut_derecha = girar_imagenes(orbinaut,True,False)
+pistolero_izquierda = girar_imagenes(pistolero,True,False)
+the_boss_izquierda = girar_imagenes(the_boss,True,False)
+boss_mas_velocidad_izquierda = girar_imagenes(boss_mas_velocidad,True,False)
+tirador_izquierda = girar_imagenes(pistolero,True,False)
+

@@ -1,4 +1,4 @@
-import pygame
+'''import pygame
 from niveles import Nivel
 
 
@@ -15,4 +15,4 @@ class NivelUno(Nivel):
         pantalla.blit(fondo,(0,0))
 
         #SONIDO PARA EL FONDO
-        crear_sonido_fondo("recursos de mi juego\sonidos\sonic-gumball.mp3",-1,0.1)
+        crear_sonido_fondo("recursos de mi juego\sonidos\sonic-gumball.mp3",-1,0.1)'''

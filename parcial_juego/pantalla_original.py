@@ -1,8 +1,9 @@
 import pygame,sys
-from POO import *
+#from POO import *
 from sonido import *
 from listas import *
 import time
+#from imagenes_giradas import *
 
 def agregar_vida(lista_vidas:list,sonic):
     
@@ -51,7 +52,8 @@ def obtener_rectangulos(principal:pygame.rect.Rect)->dict:
     
     return diccionario
 
-def aplicar_gravedad(pantalla:pygame.Surface,personaje_animacion,lados_personaje:pygame.Rect,pisos:list,sonic):
+def aplicar_gravedad(pantalla:pygame.Surface,personaje_animacion,lados_personaje:pygame.Rect
+                    ,pisos:list,sonic):
     
     """
     le aplica la gravedad al personaje en donde le permitira saltar y desplazarse por el eje y

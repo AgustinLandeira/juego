@@ -1,10 +1,11 @@
-from NIVELES import *
-from listas import *
-from pantalla_original import *
-from POO import *
+from NIVELES import Nivel
+from clases.clase_personaje import personaje
 from crear_objetos_enem import *
+
+from listas import *
 from sonido import *
-from clase_anillo import *
+from pantalla_original import *
+
 from actualizar_anillos import *
 
 
@@ -73,5 +74,5 @@ class NivelUno(Nivel):
 
         super().__init__(pantalla,sonic,lista_plataformas,fondo,lados_personaje,plataformas_creadas,
                         listas_trampas,enemigos,lista_enemigos_animaciones,lista_anillos,anillos_creados,
-                        items_creados,lista_vacia,lista_vidas)
+                        items_creados,lista_vacia,lista_vidas,lista_animaciones)
         
