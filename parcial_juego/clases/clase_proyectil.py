@@ -1,5 +1,5 @@
 import pygame
-from pantalla_original import *
+from editar import *
 
 
 class proyectil:
@@ -14,7 +14,6 @@ class proyectil:
         self.velocidad = velocidad
         self.limite = limite
         self.personaje = personaje
-
     
     def obtener_diccionario(self):
         return {

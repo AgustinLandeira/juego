@@ -2,7 +2,7 @@ import pygame
 import random
 
 #from parcial_juego.listas import *
-from pantalla_original import obtener_rectangulos
+from editar import obtener_rectangulos
 
 
 class anillo:

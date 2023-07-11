@@ -1,5 +1,5 @@
 import pygame
-from pantalla_original import *
+from editar import *
 
 class plataforma:
     def __init__(self,path,ancho,alto,x,y):

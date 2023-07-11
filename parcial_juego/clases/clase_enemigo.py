@@ -1,7 +1,7 @@
 
 import pygame
 from  listas import *
-from pantalla_original import obtener_rectangulos
+from editar import obtener_rectangulos
 
 
 class enemigo:

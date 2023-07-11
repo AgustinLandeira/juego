@@ -3,7 +3,7 @@ import pygame
 #clase_anillo e item
 from clases.clase_anillo import anillo
 from clases.clase_item import item_vida
-from pantalla_original import agregar_vida
+
 from sonido import * 
 
 
@@ -195,7 +195,7 @@ def verificar_coalicion(lista_anillos:list,lados_personaje:dict,sonic,lista_item
         
         if lados_personaje["main"].colliderect(item["rectangulo"]):
             lista_items.remove(item)
-            agregar_vida(lista_vidas,sonic)
+            sonic.agregar_vida(lista_vidas,sonic)
             
         elif item["rectangulo"].y > 600:
             lista_items.remove(item)

@@ -1,13 +1,13 @@
 import pygame
-from pantalla_original import obtener_rectangulos
+from editar import obtener_rectangulos
 
 
 class jefe:
     def __init__(self,x,y,velocidad,lista_recibida,derecha,limite_izquierda,limite_derecha):
         
-        self.rectangulo_boss = lista_recibida[0].get_rect()
-        self.rectangulo_boss.x = x
-        self.rectangulo_boss.y = y
+        self.rectangulo = lista_recibida[0].get_rect()
+        self.rectangulo.x = x
+        self.rectangulo.y = y
         self.velocidad = velocidad
         self.direccion_derecha = derecha[0]
         self.direccion_izquierda = lista_recibida[0]
@@ -31,10 +31,10 @@ class jefe:
             "posicion_y": self.rectangulo_vida.y
         }
     
-    def atributos_bosss(self):
+    def obtener_diccionario(self):
         
         return{
-            'rectangulo': self.rectangulo_boss,
+            'rectangulo': self.rectangulo,
             'velocidad': self.velocidad,
             'direccion_izquierda':self.direccion_izquierda,
             'direccion_derecha': self.direccion_derecha,
@@ -42,7 +42,7 @@ class jefe:
             'limite_izquierda': self.limite_izquierda,
             'bandera': self.bandera,
             'direccion': self.direccion,
-            'lados': obtener_rectangulos(self.rectangulo_boss),
+            'lados': obtener_rectangulos(self.rectangulo),
             'aumento_velocidad': self.aumento_velocidad
             
         }

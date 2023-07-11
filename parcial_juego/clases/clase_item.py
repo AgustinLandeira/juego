@@ -1,7 +1,7 @@
 import pygame
 import random
 
-from pantalla_original import obtener_rectangulos
+from editar import obtener_rectangulos
 
 class item_vida:
     

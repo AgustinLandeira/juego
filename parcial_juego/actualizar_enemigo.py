@@ -1,8 +1,8 @@
-
-from pantalla_original import *
+from editar import *
+#from pantalla_original import *
 from listas import *
-#from crear_objetos_enem import *
-#from imagenes_giradas import *
+from clases.clase_personaje import *
+from sonido import *
 import time
 
 def coalicion_enemigo(lista_enemigo:list,lados_personaje:dict,lados_trampas:dict)->bool:
@@ -97,11 +97,11 @@ def disparo(lista_proyectiles:list,pantalla:pygame.Surface,lados_personaje:dict,
             
             if proyectil["rectangulo"].colliderect(lados_personaje["main"]):
                 
-                mover_personaje(lados_personaje,sonic.velocidad,True)
+                sonic.mover_personaje(lados_personaje,sonic.velocidad,True)
                 
                 proyectil["rectangulo"].x = bombardero["rectangulo"].x
                 proyectil["rectangulo"].y = bombardero["rectangulo"].y + 10
-                sacar_vida(lista_vidas)
+                sonic.sacar_vida(lista_vidas)
                 sonido_daño("recursos de mi juego\sonidos\daño.wav")
         
         elif proyectil["personaje"] == "tirador":
@@ -117,11 +117,11 @@ def disparo(lista_proyectiles:list,pantalla:pygame.Surface,lados_personaje:dict,
             
             if proyectil["rectangulo"].colliderect(lados_personaje["main"]):
                 
-                mover_personaje(lados_personaje,sonic.velocidad,True)
+                sonic.mover_personaje(lados_personaje,sonic.velocidad,True)
                 
                 proyectil["rectangulo"].x = bombardero["rectangulo"].x
                 proyectil["rectangulo"].y = bombardero["rectangulo"].y + 10
-                sacar_vida(lista_vidas)
+                sonic.sacar_vida(lista_vidas)
                 sonido_daño("recursos de mi juego\sonidos\daño.wav")
                 
 def actualizar_boss(pantalla:pygame.Surface,segundos:int,vidas_boss,lados_personaje:dict,lista_boss:list,
@@ -236,7 +236,6 @@ def verificar_coalicion_con_boss(lista_boss:list,lados_personaje:dict,colisiono:
     
     """
     
-    
     global ultima_colision,retraso_colision
     
     murio = False
@@ -245,7 +244,7 @@ def verificar_coalicion_con_boss(lista_boss:list,lados_personaje:dict,colisiono:
         
         if lados_personaje["bottom"].colliderect(clave["lados"]["top"]):
             
-            print("choco arriba")
+            
             colisiono = True
             sacar_vida_boss(vidas_boss,lista_boss)
             
@@ -258,8 +257,8 @@ def verificar_coalicion_con_boss(lista_boss:list,lados_personaje:dict,colisiono:
     
             if tiempo_actual - ultima_colision >= retraso_colision:
                 
-                sacar_vida(lista_vidas)
-                mover_personaje(lados_personaje,sonic.velocidad,murio)
+                sonic.sacar_vida(lista_vidas)
+                sonic.mover_personaje(lados_personaje,sonic.velocidad,murio)
                 
                 ultima_colision = tiempo_actual
                 

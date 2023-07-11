@@ -6,9 +6,9 @@ from clases.clase_boss import jefe
 from clases.clase_proyectil import proyectil
 from clases.clase_plataforma import plataforma
 
-from pantalla_original import obtener_rectangulos
-from pantalla_original import girar_imagenes
-from pantalla_original import reescalar_imagen
+from editar import obtener_rectangulos
+from editar import girar_imagenes
+from editar import reescalar_imagen
 
 
 ##############PLATAFORMAS y tramas ############
@@ -259,7 +259,7 @@ def crear_enemigo_nivel2()->list:
         
     return enemigos,lista_enemigos_animaciones,lista_proyectiles,lista_de_bombarderos 
 
-def crear_enemigo_nivel3()->list:
+def crear_enemigo_nivel3(boss)->list:
     
     """crea enemigos llamando a la clase enemigo para el nivel tres"""
     
@@ -308,8 +308,14 @@ def crear_enemigo_nivel3()->list:
     bala = proyectil(20,20,tirador.rectangulo.x,tirador.rectangulo.y,40,
                     "recursos de mi juego\enemigos-objetos\\bala.png",1,"tirador")
     lista_proyectiles.append(bala.obtener_diccionario())
+    
+   
+    bala_boss = proyectil(20,15,boss.rectangulo.x ,boss.rectangulo.y +20 ,30,
+                            "recursos de mi juego\enemigos-objetos\\bala_boss.png",1,"tirador")
+        
+    lista_proyectiles.append(bala_boss.obtener_diccionario())
 
-    bombarderos = [mi_bombardero,bombardero2,bombardero3,tirador]
+    bombarderos = [mi_bombardero,bombardero2,bombardero3,tirador,boss]
 
     lista_de_bombarderos = []
 
@@ -326,7 +332,7 @@ def crear_boss():
     
     boss = jefe(850,330,20,the_boss_izquierda,the_boss,5,1000)
     
-    lista_boss.append(boss.atributos_bosss()) 
+    lista_boss.append(boss.obtener_diccionario()) 
     
     return lista_boss,boss    
 
