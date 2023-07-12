@@ -28,7 +28,7 @@ def obtener_rectangulos(principal:pygame.rect.Rect)->dict:
         
         diccionario['main'] = principal
         diccionario["bottom"] = pygame.Rect(principal.left, principal.bottom - 15, principal.width, 15)
-        diccionario["right"] = pygame.Rect(principal.right -10, principal.top, 10, principal.height)
+        diccionario["right"] = pygame.Rect(principal.right -9, principal.top, 9, principal.height)
         diccionario["left"] = pygame.Rect(principal.left, principal.top, 14, principal.height)
         diccionario["top"] = pygame.Rect(principal.left, principal.top, principal.width, 18) 
         
@@ -46,6 +46,17 @@ def reescalar_imagen(lista_animaciones:list,w:int,h:int):
         for i in range(len(lista)):
             imagen = lista[i]
             lista[i] = pygame.transform.scale( imagen, (w,h) )
+
+def obtener_rectangulos_boss(principal:pygame.rect.Rect):
+    diccionario = {}
+        
+    diccionario['main'] = principal
+    diccionario["bottom"] = pygame.Rect(principal.left, principal.bottom - 15, principal.width, 15)
+    diccionario["right"] = pygame.Rect(principal.right -7, principal.top, 7, principal.height)
+    diccionario["left"] = pygame.Rect(principal.left, principal.top, 14, principal.height)
+    diccionario["top"] = pygame.Rect(principal.left, principal.top, principal.width, 6) 
+    
+    return diccionario
 
 
 

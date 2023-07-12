@@ -13,11 +13,11 @@ class NivelTres(Nivel):
 
         pantalla = pygame.display.set_mode((w,h))
 
-        #tiempo
+        """#tiempo
         tiempo_transcurrido = pygame.time.get_ticks()
         clock = pygame.time.Clock()
         previous_time = pygame.time.get_ticks()
-        
+        """
 
         #fondo
         fondo = pygame.image.load("recursos de mi juego\\background\\fondo nivel 3.png")
@@ -26,7 +26,7 @@ class NivelTres(Nivel):
         pantalla.blit(fondo,(0,0))
 
         #SONIDO PARA EL FONDO
-        crear_sonido_fondo("recursos de mi juego\sonidos\sonic-gumball.mp3",-1,0.1)
+        crear_sonido_fondo("recursos de mi juego\sonidos\sonic-mystic-cave-zone.mp3",-1,0.1)
 
         #PERSONAJE   
 
@@ -36,14 +36,14 @@ class NivelTres(Nivel):
 
         reescalar_imagen(lista_animaciones,36,45)
 
-        personaje_principal = personaje(h/2 - 120,350,20,0,-27,27,4,"quieto",False) 
+        personaje_principal = personaje(h/2 - 150,350,20,0,-27,27,4,"quieto",False) 
 
         lados_personaje = obtener_rectangulos(personaje_principal.rectangulo)
 
         #SUPERFICIE
         #piso
         piso = pygame.Rect(0,0,w,20)
-        piso.top = personaje_principal.rectangulo.bottom
+        #piso.top = personaje_principal.rectangulo.bottom
 
         lados_piso = obtener_rectangulos(piso)
 
@@ -68,8 +68,6 @@ class NivelTres(Nivel):
 
         #################################################################################
         
-        
-
         #ANILLOS
 
         lista_anillos = crear_anillos("nivel dos")
@@ -94,6 +92,6 @@ class NivelTres(Nivel):
                         plataformas_creadas, listas_trampas, enemigos, lista_enemigos_animaciones, 
                         lista_anillos,anillos_creados, items_creados, lista_vacia, lista_vidas, 
                         lista_animaciones,tiempo,muertes,lista_de_bombarderos,lista_proyectiles,boss,
-                        lista_boss,vidas_boss,path)       
+                        lista_boss,vidas_boss,path,170)       
                      
                 

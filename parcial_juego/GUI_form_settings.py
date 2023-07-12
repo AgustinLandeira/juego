@@ -13,6 +13,7 @@ current_volume = 0.2
 class formSettings(Form):
     def __init__(self, screen, x, y, w, h, color_background, color_border, active,contenedor_nivel = None):
         super().__init__(screen, x, y, w, h, color_background, color_border, active)
+        self.path = "recursos de mi juego\interfaz\HITE_sfx#11 (SFX_10_menu).wav"
         self.contenedor_nivel = contenedor_nivel
         self.volumen = current_volume  # Utiliza el volumen actual almacenado
         self.flag_play = True
@@ -63,19 +64,8 @@ class formSettings(Form):
         current_volume = self.volumen
             
     def update(self,lista_eventos):
-        if self.setting == False:
-            self.nivel.update(lista_eventos)
-            for widget in self.lista_widgets:
-                widget.update(lista_eventos)
-            self.draw()
-        else:
-            if self.verificar_dialog_result():
-                for widget in self.lista_widgets:
-                    widget.update(lista_eventos)
-                self.draw()
-            else:
-                self.hijo.update(lista_eventos)
-        '''if self.verificar_dialog_result():
+        
+        if self.verificar_dialog_result():
             if self.active:
                 self.draw()
                 self.render()
@@ -83,13 +73,20 @@ class formSettings(Form):
                     widget.update(lista_eventos)
                 self.update_volumen(lista_eventos)
         else:
-            self.hijo.update(lista_eventos)'''
+            self.hijo.update(lista_eventos)
 
     def render(self):
         self._slave.fill(self._color_background)
     
     def btn_home_click(self,param):
+        
+        self.reproducir_sonido_boton()
+        
         if self.contenedor_nivel != None:
             self.contenedor_nivel.setting = False  # Establecer self.setting en False
             self.end_dialog()
         self.end_dialog()
+        
+    def reproducir_sonido_boton(self):
+        sonido_colision = pygame.mixer.Sound(self.path)
+        sonido_colision.play(0) 

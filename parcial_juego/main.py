@@ -27,7 +27,6 @@ while running:
     
     form_prueba.update(lista_eventos)
 
-    
     pygame.display.flip()
         
 

@@ -1,5 +1,5 @@
 import pygame
-from editar import obtener_rectangulos
+from editar import obtener_rectangulos_boss
 
 
 class jefe:
@@ -42,7 +42,7 @@ class jefe:
             'limite_izquierda': self.limite_izquierda,
             'bandera': self.bandera,
             'direccion': self.direccion,
-            'lados': obtener_rectangulos(self.rectangulo),
+            'lados': obtener_rectangulos_boss(self.rectangulo),
             'aumento_velocidad': self.aumento_velocidad
             
         }

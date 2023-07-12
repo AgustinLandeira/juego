@@ -32,6 +32,7 @@ class personaje:
         self.desplazamiento_y = 0
         self.esta_saltando = False
         self.lados_personaje = obtener_rectangulos(self.rectangulo)
+        self.reaparecer_y = self.y
         
     def obtener_vidas(self):
         
@@ -104,7 +105,7 @@ class personaje:
             self.animar_personaje(pantalla,lados_personaje["main"],personaje_animacion,jugador)
                 
             for lado in lados_personaje: 
-                lados_personaje[lado].y += jugador.desplazamiento_y            
+                lados_personaje[lado].y += jugador.desplazamiento_y           
                     
             if jugador.desplazamiento_y + jugador.gravedad < jugador.limite_velocidad_caida:
                 
@@ -166,8 +167,13 @@ class personaje:
                 lados_personaje[lado].x += velocidad
                 
         else:
+            self.rectangulo.x = 600/2 -250
+            self.rectangulo.y = self.reaparecer_y
             for lado in lados_personaje:
-                lados_personaje[lado].x = 600/2 - 250
+                lados_personaje["bottom"] = pygame.Rect(self.rectangulo.left, self.rectangulo.bottom - 15, self.rectangulo.width, 15)
+                lados_personaje["right"] = pygame.Rect(self.rectangulo.right -10, self.rectangulo.top, 10, self.rectangulo.height)
+                lados_personaje["left"] = pygame.Rect(self.rectangulo.left, self.rectangulo.top, 14, self.rectangulo.height)
+                lados_personaje["top"] = pygame.Rect(self.rectangulo.left, self.rectangulo.top, self.rectangulo.width, 18)
 
     def animar_personaje(self,pantalla:pygame.Surface,lados_del_personaje,accion_personaje,sonic):
         

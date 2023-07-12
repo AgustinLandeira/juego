@@ -127,9 +127,9 @@ def crear_plataformas_nivel3(lados_piso:dict)->list:
     #plataforma
     mi_plataforma = plataforma("recursos de mi juego\plataformas\plat_nivel_2(2).png",100,30,430,250)
 
-    mi_plataforma_dos = plataforma("recursos de mi juego\plataformas\plat_nivel_2(4).png",500,30,1030,400)#
+    mi_plataforma_dos = plataforma("recursos de mi juego\plataformas\plat_nivel_2(4).png",500,30,1070,400)#
 
-    mi_plataforma_tercera = plataforma("recursos de mi juego\plataformas\plat_nivel_2(5).png",50,20,860,250)
+    mi_plataforma_tercera = plataforma("recursos de mi juego\plataformas\plat_nivel_2(5).png",50,20,980,250)##
 
     mi_plataforma_cuatro = plataforma("recursos de mi juego\plataformas\plat_nivel_2(5).png",300,30,1,400)#
 
@@ -270,13 +270,10 @@ def crear_enemigo_nivel3(boss)->list:
 
     reescalar_imagen(lista_enemigos_animaciones,37,35)
 
-    pelotita_fuego = enemigo(1150,350,10,pelota_fuego,pelota_fuego_derecha,1000,1150)
+    pelotita_fuego = enemigo(600,350,10,pelota_fuego,pelota_fuego_derecha,500,800)
     enemigos.append(pelotita_fuego.obtener_diccionario())
-
-    mi_bombardero = enemigo(450,30,12,bombardero,bombardero,5,300)
-    enemigos.append(mi_bombardero.obtener_diccionario())
     
-    mi_orbinaut = enemigo(1000,350,10,orbinaut,orbinaut_derecha,100,800)
+    mi_orbinaut = enemigo(10,70,10,orbinaut,orbinaut_derecha,5,200)
     enemigos.append(mi_orbinaut.obtener_diccionario())
 
     mi_orbinaut2 = enemigo(1100,170,20,orbinaut,orbinaut_derecha,400,900)
@@ -288,14 +285,10 @@ def crear_enemigo_nivel3(boss)->list:
     bombardero3 = enemigo(760,30,5,bombardero,bombardero,700,800)
     enemigos.append(bombardero3.obtener_diccionario())
 
-    tirador = enemigo(800,160,5,pistolero_izquierda,pistolero_izquierda,700,900)
+    tirador = enemigo(1100,160,5,pistolero_izquierda,pistolero_izquierda,1000,1160)
     enemigos.append(tirador.obtener_diccionario())
     
     lista_proyectiles = []
-
-    fuego = proyectil(20,20,mi_bombardero.rectangulo.x,mi_bombardero.rectangulo.y,15,
-            "recursos de mi juego\enemigos-objetos\\fuego.png",550,"bombardero")
-    lista_proyectiles.append(fuego.obtener_diccionario())
 
     fuego_2 = proyectil(20,20,bombardero2.rectangulo.x,bombardero2.rectangulo.y,20,
                         "recursos de mi juego\enemigos-objetos\\fuego.png",550,"bombardero")
@@ -311,11 +304,11 @@ def crear_enemigo_nivel3(boss)->list:
     
    
     bala_boss = proyectil(20,15,boss.rectangulo.x ,boss.rectangulo.y +20 ,30,
-                            "recursos de mi juego\enemigos-objetos\\bala_boss.png",1,"tirador")
+                            "recursos de mi juego\enemigos-objetos\\bala_boss.png",1,"boss")
         
     lista_proyectiles.append(bala_boss.obtener_diccionario())
 
-    bombarderos = [mi_bombardero,bombardero2,bombardero3,tirador,boss]
+    bombarderos = [bombardero2,bombardero3,tirador,boss]
 
     lista_de_bombarderos = []
 
@@ -330,7 +323,7 @@ def crear_boss():
     
     lista_boss = []
     
-    boss = jefe(850,330,20,the_boss_izquierda,the_boss,5,1000)
+    boss = jefe(850,347,20,the_boss_izquierda,the_boss,5,1000)
     
     lista_boss.append(boss.obtener_diccionario()) 
     

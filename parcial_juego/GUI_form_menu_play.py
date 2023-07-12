@@ -7,9 +7,11 @@ from GUI_form import *
 from GUI_button_image import *
 from manejador_niveles import Manejador_niveles
 from GUI_form_contenedor_niveles import formcontenedorNivel
+from editar import reescalar_imagen
 
 
 class formMenuPlay(Form):
+    
     def __init__(self, screen, x, y, w, h, color_background, color_border, active, path_image):
         super().__init__(screen, x, y, w, h, color_background, color_border, active)
         self.manejador_niveles = Manejador_niveles(self._master)
@@ -18,8 +20,20 @@ class formMenuPlay(Form):
         self._slave = aux_image
         self.nivel1_desbloqueado = True
         self.nivel2_desbloqueado = False
-        self.nivel3_desbloqueado = False
+        self.nivel3_desbloqueado = False #
         self.primera_vuelta = False
+        self.path = "recursos de mi juego\interfaz\HITE_sfx#11 (SFX_10_menu).wav"
+        
+        candado_bloqueado = [pygame.image.load("recursos de mi juego\\interfaz\\locked.png")]
+        candado_desbloqueado = [pygame.image.load("recursos de mi juego\\interfaz\\unlocked.png")]
+        self.lista_candado = []
+        self.lista_candado.append(candado_bloqueado)
+        
+        self.lista_candado.append(candado_desbloqueado)
+        
+        reescalar_imagen(self.lista_candado,50,60)
+        
+        self.dibujar_candado()
         
         if self.primera_vuelta == False:
             un_dato = {}
@@ -40,7 +54,7 @@ class formMenuPlay(Form):
                     json.dump(un_dato,file,indent = 4)
                 
             except:
-                print("hubo un error al escribir los datos de la partida")
+                print("hubo un error al escribir los datos del segundo nivel de la partida")
                 
             self.primera_vuelta = True
             
@@ -116,7 +130,10 @@ class formMenuPlay(Form):
     
     def entrar_nivel(self, nombre_nivel):
         
+        self.reproducir_sonido_boton()
+        
         if nombre_nivel == "nivel uno" and self.nivel1_desbloqueado == True:
+            
             nivel = self.manejador_niveles.get_nivel(nombre_nivel)
             frm_contenedor_nivel = formcontenedorNivel(self._master,nivel)
             self.show_dialog(frm_contenedor_nivel)
@@ -129,14 +146,15 @@ class formMenuPlay(Form):
             
             if resultado != "no cuenta porque no pudo sobrevivir a  el nivel" and self.tiempo_jugado == 60:
                 self.nivel2_desbloqueado = True
-                 
+                self.dibujar_candado()
+                
         if nombre_nivel == "nivel dos" and self.nivel2_desbloqueado == True: 
             
             nivel = self.manejador_niveles.get_nivel(nombre_nivel)
             frm_contenedor_nivel = formcontenedorNivel(self._master,nivel)
             self.show_dialog(frm_contenedor_nivel)
         
-        with open("parcial_juego\datos_partida\\nivel_1.json","r") as archivo:
+        with open("parcial_juego\datos_partida\\nivel_2..json","r") as archivo:
             
             datos = json.load(archivo)
             resultado = datos['segundos en obtener el puntaje requerido']
@@ -144,6 +162,7 @@ class formMenuPlay(Form):
             
             if resultado != "no cuenta porque no pudo sobrevivir a  el nivel" and self.tiempo_jugado == 60:
                 self.nivel3_desbloqueado = True
+                self.dibujar_candado()
         
         if nombre_nivel == "nivel tres" and self.nivel3_desbloqueado == True: 
             
@@ -153,6 +172,36 @@ class formMenuPlay(Form):
     
 
     def btn_home_click(self, param):
+       
+        self.reproducir_sonido_boton()
+        
         self.end_dialog()
+    
+    def reproducir_sonido_boton(self):
+        sonido_colision = pygame.mixer.Sound(self.path)
+        sonido_colision.play(0)
+        
+    def dibujar_candado(self):
+        
+        if self.nivel1_desbloqueado == True:
+            candado = self.lista_candado[1]
+            self._slave.blit(candado[0],(230,200))
+        
+        if self.nivel2_desbloqueado == False:
+            candado = self.lista_candado[0]
+            self._slave.blit(candado[0],(550,200))
+        
+        else:
+            candadoo = self.lista_candado[1]
+            self._slave.blit(candadoo[0],(550,200))
+            
+        if self.nivel3_desbloqueado == False:
+            candado = self.lista_candado[0]
+            self._slave.blit(candado[0],(840,200))
+        
+        else:
+            candadoo = self.lista_candado[1]
+            self._slave.blit(candadoo[0],(840,200))
+            
     
     

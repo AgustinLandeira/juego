@@ -20,6 +20,7 @@ class formPrueba(Form):
         
         self.volumen = 0.2
         self.flag_play = True
+        self.path = "recursos de mi juego\interfaz\HITE_sfx#11 (SFX_10_menu).wav"
     
         ####################controles######
         #self.txtbox = TextBox(self._slave,x,y,50,50,150,30,"gray","white","red","blue",2,font = "Comic Sans",font_size=15,font_color="black")
@@ -80,25 +81,14 @@ class formPrueba(Form):
     
     def btn_setting(self,lista_eventos):
         
+        self.reproducir_sonido_boton()
+        
         formulario_setting = formSettings(self._master,100,25,800,550,"Black","Black",True)
         self.show_dialog(formulario_setting)
         
-        ''' self.volumen = self.slider_volumen.value
-        #self.lebel_volumen.update(lista_eventos)
-        self.lebel_volumen.set_text(f"{round(self.volumen * 100)}%")
-        pygame.mixer.music.set_volume(self.volumen)'''
-    
-    '''def update_volumen(self,lista_eventos):
-        self.volumen = self.slider_volumen.value
-        #self.lebel_volumen.update(lista_eventos)
-        self.lebel_volumen.set_text(f"{round(self.volumen * 100)}%")
-        pygame.mixer.music.set_volume(self.volumen)'''
         
     def btn_tabla_click(self,texto):
-        '''dic_store = [{"jugador":"gio","score":1000},
-                    {"jugador":"fausto","score":500},
-                    {"jugador":"gonza","score":750}
-                    ]   '''
+        self.reproducir_sonido_boton()
         fmr_jugar = formMenuPlay(screen = self._master,
                     x = 0, 
                     y = 0, 
@@ -107,21 +97,11 @@ class formPrueba(Form):
                     color_background=(220,0,220),
                     color_border=(255,255,255),
                     active = True,path_image="recursos de mi juego\interfaz\menu_play_1.png")
-        self.show_dialog(fmr_jugar)
-        '''form_puntaje =  FormMenuScore(self._master,
-                                    250,
-                                    25,
-                                    500,
-                                    550,
-                                    (220,0,220),
-                                    "white",
-                                    True,
-                                    "recursos de mi juego\Window.png",
-                                    dic_store,
-                                    100,
-                                    10,
-                                    10
-                                    )
         
-        self.show_dialog(form_puntaje)'''
+        self.show_dialog(fmr_jugar)
+        
+    def reproducir_sonido_boton(self):
+        sonido_colision = pygame.mixer.Sound(self.path)
+        sonido_colision.play(0)
+    
      

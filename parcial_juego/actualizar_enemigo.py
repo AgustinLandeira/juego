@@ -73,7 +73,8 @@ def actualizar_enemigo(enemigos:list,pantalla:pygame.Surface):
     """ empieza a actualizar al  enemigo mediante una funcion """
     mover_enemigo(enemigos,pantalla)
 
-def disparo(lista_proyectiles:list,pantalla:pygame.Surface,lados_personaje:dict,sonic,lista_vidas:list,bombarderos:list):
+def disparo(lista_proyectiles:list,pantalla:pygame.Surface,lados_personaje:dict,sonic,lista_vidas:list,bombarderos:list,
+            vidas_boss):
     
     """
     se encarga de mover los proyectiles en eje x o eje y,ademas si choca con el personaje
@@ -81,7 +82,9 @@ def disparo(lista_proyectiles:list,pantalla:pygame.Surface,lados_personaje:dict,
     de vidas y lista de bombarderos que serian los enemigos que disparan
     
     """
-
+    
+    global ultima_colision_proyectil,retraso_colision_proyetil
+    
     for bombardero,proyectil in zip(bombarderos,lista_proyectiles):                
                    
         if proyectil["personaje"] == "bombardero":
@@ -117,12 +120,46 @@ def disparo(lista_proyectiles:list,pantalla:pygame.Surface,lados_personaje:dict,
             
             if proyectil["rectangulo"].colliderect(lados_personaje["main"]):
                 
-                sonic.mover_personaje(lados_personaje,sonic.velocidad,True)
+                tiempo_actual_2 = time.time()
+                if tiempo_actual_2 - ultima_colision_proyectil >= retraso_colision_proyectil:
+                    sonic.mover_personaje(lados_personaje,sonic.velocidad,True)
+                    
+                    proyectil["rectangulo"].x = bombardero["rectangulo"].x
+                    proyectil["rectangulo"].y = bombardero["rectangulo"].y + 10
+                    sonic.sacar_vida(lista_vidas)
+                    sonido_daño("recursos de mi juego\sonidos\daño.wav")
+                    
+                    ultima_colision_proyectil = tiempo_actual_2
+        
+        elif proyectil["personaje"] == "boss":
+            
+            if vidas_boss != []:
+            
+                proyectil["rectangulo"].x -= proyectil["velocidad"]
                 
-                proyectil["rectangulo"].x = bombardero["rectangulo"].x
-                proyectil["rectangulo"].y = bombardero["rectangulo"].y + 10
-                sonic.sacar_vida(lista_vidas)
-                sonido_daño("recursos de mi juego\sonidos\daño.wav")
+                if proyectil["rectangulo"].x < proyectil["limite"]:
+                    
+                    proyectil["rectangulo"].x = bombardero["rectangulo"].x
+                    proyectil["rectangulo"].y = bombardero["rectangulo"].y + 10
+                
+                pantalla.blit(proyectil["superficie"],proyectil["rectangulo"])
+                
+                if proyectil["rectangulo"].colliderect(lados_personaje["main"]):
+                    
+                    tiempo_actual_2 = time.time()
+                    if tiempo_actual_2 - ultima_colision_proyectil >= retraso_colision_proyectil:
+                        sonic.mover_personaje(lados_personaje,sonic.velocidad,True)
+                        
+                        proyectil["rectangulo"].x = bombardero["rectangulo"].x
+                        proyectil["rectangulo"].y = bombardero["rectangulo"].y + 10
+                        sonic.sacar_vida(lista_vidas)
+                        sonido_daño("recursos de mi juego\sonidos\daño.wav")
+                        
+                        ultima_colision_proyectil = tiempo_actual_2
+            else:
+                lista_proyectiles.remove(proyectil)
+                bombarderos.remove(bombardero)
+        
                 
 def actualizar_boss(pantalla:pygame.Surface,segundos:int,vidas_boss,lados_personaje:dict,lista_boss:list,
                     lista_vidas:list,sonic):
@@ -162,7 +199,7 @@ def mover_boss(pantalla:pygame.Surface,segundos:int,lados_personaje:dict,lista_b
             if malo["rectangulo"].x > malo["limite_izquierda"] and malo["bandera"] == False:
                 
                 for lado in malo["lados"]:
-                    malo["lados"][lado].x -= malo["velocidad"]
+                    malo["lados"][lado].x -=  malo["velocidad"]
         
                 malo["direccion"]= "izquierda"
                 
@@ -170,7 +207,7 @@ def mover_boss(pantalla:pygame.Surface,segundos:int,lados_personaje:dict,lista_b
                 malo["bandera"] = True
             
             if malo["rectangulo"].x < malo["limite_derecha"] and malo["bandera"] == True:
-                
+
                 for lado in malo["lados"]:
                     malo["lados"][lado].x += malo["velocidad"]
     
@@ -212,10 +249,18 @@ def mover_boss(pantalla:pygame.Surface,segundos:int,lados_personaje:dict,lista_b
                 if colisiono == True:
                     
                     animar_boss(pantalla,vida_perdida_boss[0],malo["rectangulo"])
-        
+                    
+                    malo["rectangulo"].x = 850
+                    malo["rectangulo"].y = 347
+                    
                     for lado in malo["lados"]:
-                        malo["lados"][lado].x = 850
-        
+                        malo["lados"]["main"] = malo["rectangulo"]
+                        malo["lados"]["bottom"] = pygame.Rect(malo["rectangulo"].left, malo["rectangulo"].bottom - 15, malo["rectangulo"].width, 15)
+                        malo["lados"]["right"] = pygame.Rect(malo["rectangulo"].right -7, malo["rectangulo"].top, 7, malo["rectangulo"].height)
+                        malo["lados"]["left"] = pygame.Rect(malo["rectangulo"].left, malo["rectangulo"].top, 14, malo["rectangulo"].height)
+                        malo["lados"]["top"] = pygame.Rect(malo["rectangulo"].left, malo["rectangulo"].top, malo["rectangulo"].width, 6)
+
+                      
 def crear_vida_boss(pantalla:pygame.Surface,vidas_boss:list):
     
     """
@@ -244,13 +289,12 @@ def verificar_coalicion_con_boss(lista_boss:list,lados_personaje:dict,colisiono:
         
         if lados_personaje["bottom"].colliderect(clave["lados"]["top"]):
             
-            
             colisiono = True
             sacar_vida_boss(vidas_boss,lista_boss)
             
             break
         
-        elif lados_personaje["main"].colliderect(clave["lados"]["main"]):
+        elif lados_personaje["right"].colliderect(clave["lados"]["left"]):
             
             murio = True
             tiempo_actual = time.time()
@@ -266,8 +310,23 @@ def verificar_coalicion_con_boss(lista_boss:list,lados_personaje:dict,colisiono:
                 sonido_daño("recursos de mi juego\sonidos\daño.wav")
                 
                 break
-        
             
+        elif lados_personaje["left"].colliderect(clave["lados"]["right"]):
+            
+            murio = True
+            tiempo_actual = time.time()
+    
+            if tiempo_actual - ultima_colision >= retraso_colision:
+                
+                sonic.sacar_vida(lista_vidas)
+                sonic.mover_personaje(lados_personaje,sonic.velocidad,murio)
+                
+                ultima_colision = tiempo_actual
+                
+                daño_del_boss("recursos de mi juego\sonidos\hahah.wav")
+                sonido_daño("recursos de mi juego\sonidos\daño.wav")
+                
+                break
             
     return colisiono
 
@@ -276,7 +335,7 @@ def sacar_vida_boss(vidas_boss,lista_boss):
     saca las vidas del jefe 
     parametro: recibe una lista con las vidas restantes que temndra el jefe
     """
-    if len(vidas_boss) != 1 :
+    if len(vidas_boss) >= 1 :
         
         vidas_boss.pop(-1)
         
@@ -299,6 +358,9 @@ def eliminar_boss(lista_boss:list):
 
 ultima_colision = 0
 retraso_colision = 4.0
+
+ultima_colision_proyectil = 0
+retraso_colision_proyectil = 3.0
 
 pez_mirando_derecha = girar_imagenes(personaje_enemigo,True,False)
 cangrejo_derecha = girar_imagenes(cangrejo,True,False)

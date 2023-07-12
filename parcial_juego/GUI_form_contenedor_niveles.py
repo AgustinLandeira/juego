@@ -8,7 +8,7 @@ class formcontenedorNivel(Form):
     
     def __init__(self,pantalla:pygame.Surface,nivel):
         super().__init__(pantalla,0,0,pantalla.get_width(),pantalla.get_height())
-        
+        self.path = "recursos de mi juego\interfaz\HITE_sfx#11 (SFX_10_menu).wav"
         nivel._slave = self._slave
         self.nivel = nivel
         self.setting = False
@@ -30,7 +30,7 @@ class formcontenedorNivel(Form):
                                             master_x = self._x,
                                             master_y = self._y,
                                             x = 1160,
-                                            y = 530,
+                                            y = 520,
                                             w = 30,
                                             h= 30,
                                             path_image = "recursos de mi juego\interfaz\configuracion.png",
@@ -58,17 +58,21 @@ class formcontenedorNivel(Form):
                 self.draw()
             else:
                 self.hijo.update(lista_eventos)
-        '''self.nivel.update(lista_eventos)
-        
-        for widget in self.lista_widgets:
-            widget.update(lista_eventos)
-        self.draw()'''
     
     def btn_setting(self,text):
         
-        formulario_setting = formSettings(self._master,100,25,800,550,"Black","Black",True)
+        self.reproducir_sonido_boton()
+        
+        formulario_setting = formSettings(self._master,100,25,800,550,"Black","Black",True, self)
+        self.setting = True
         self.show_dialog(formulario_setting)
         
     def btn_home_click(self, param):
+        
+        self.reproducir_sonido_boton()
         self.end_dialog()
+        
+    def reproducir_sonido_boton(self):
+        sonido_colision = pygame.mixer.Sound(self.path)
+        sonido_colision.play(0)
 

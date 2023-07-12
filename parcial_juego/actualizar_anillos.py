@@ -185,11 +185,6 @@ def verificar_coalicion(lista_anillos:list,lados_personaje:dict,sonic,lista_item
         elif anillo["rectangulo"].y > 600:
             
             lista_anillos.remove(anillo)
-            
-    
-    if sonic.puntaje == 100:
-        
-        crear_sonido_coalicion_anillo("recursos de mi juego\sonidos\yes.wav")
     
     for item in lista_items:
         

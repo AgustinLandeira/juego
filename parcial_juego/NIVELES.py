@@ -14,7 +14,7 @@ class Nivel:
     def __init__(self,pantalla,personaje_principal,lista_plataformas,imagen_fondo,lados_personaje,
                 plataformas_creadas,lista_trampas,enemigos,lista_enemigos_animaciones,lista_anillos
                 ,anillos_creados,items_creados,lista_vacia,lista_vidas,lista_animaciones, tiempo,muertes,
-                lista_de_bombarderos,lista_proyectiles,boss,lista_boss,vidas_boss,path):
+                lista_de_bombarderos,lista_proyectiles,boss,lista_boss,vidas_boss,path,limite_requerido):
         
         self._slave = pantalla
         self.jugador = personaje_principal
@@ -40,7 +40,7 @@ class Nivel:
         self.ultima_colision = 0
         self.retraso_colision = 2.0
         self.contador_muertes = muertes
-        self.aclaracion = pygame.font.SysFont("pixel-font", 20)
+        self.aclaracion = pygame.font.SysFont("pixel-font", 40)
         self.lista_vacia = False
         self.segundos_pasados = ""
         self.lista_proyectiles = lista_proyectiles
@@ -49,9 +49,14 @@ class Nivel:
         self.lista_boss = lista_boss
         self.vidas_boss = vidas_boss
         self.path = path
+        self.win = pygame.image.load("recursos de mi juego\interfaz\win.png")
+        self.lose =pygame.image.load("recursos de mi juego\interfaz\lose.png")
+        self.limite_ganar = limite_requerido
+        
     
        
     def update(self,lista_eventos):
+        
         
         if self.tiempo != "terminado":
             obtener_puntaje_limite = False
@@ -74,6 +79,12 @@ class Nivel:
             if self.boss != None:
                 vidas_del_boss = self.font.render(f"boss:",True, ("red"))
                 self._slave.blit(vidas_del_boss,(1020,70))
+                
+            
+                if len(self.vidas_boss) < 0 and booleano == False:
+                    self.jugador.puntaje += 200
+
+                    booleano = True
             
             self._slave.blit(text,(0,0))
             self._slave.blit(score, (1020, 10))
@@ -83,7 +94,7 @@ class Nivel:
             self.dibujar_rectangulos()
             
             if self.lista_proyectiles != None:
-                disparo(self.lista_proyectiles,self._slave,self.lados_personaje,self.jugador,self.lista_vidas,self.lista_de_bombarderos)
+                disparo(self.lista_proyectiles,self._slave,self.lados_personaje,self.jugador,self.lista_vidas,self.lista_de_bombarderos,self.vidas_boss)
             
             animar_anillos(self._slave,self.lista_anillos,anillos,self.items,item_recuperar_vida)
             verificar_coalicion(self.lista_anillos,self.lados_personaje,self.jugador,self.items,self.lista_vidas)
@@ -91,7 +102,7 @@ class Nivel:
             
             if self.boss != None:
                 actualizar_boss(self._slave,self.segundos,self.vidas_boss,self.lados_personaje,self.lista_boss,self.lista_vidas,self.jugador)
-            
+                
             if  self.segundos < 11 :
             
                 objetivo = self.aclaracion.render(f"""Mision: agarra los anillos para llegar a 300 puntos como minimo para pasar al siguiente nivel""",True,("black"))
@@ -117,7 +128,7 @@ class Nivel:
                 self.tiempo = "terminado"
                 self.segundos_pasados = "no cuenta porque no pudo sobrevivir a  el nivel"
                 
-            elif self.jugador.puntaje == 300 and obtener_puntaje_limite == False :
+            elif self.jugador.puntaje == self.limite_ganar and obtener_puntaje_limite == False :
                 self.segundos_pasados = self.segundos
                 obtener_puntaje_limite = True 
         
@@ -221,9 +232,11 @@ class Nivel:
         
     def leer_input(self,lista_eventos):
         
+        global ultima_colision,retraso_colision
+        
         lista_eventos = pygame.key.get_pressed()
 
-        if (lista_eventos[pygame.K_RIGHT] and self.jugador.rectangulo.right < 1180 - self.jugador.velocidad):
+        if (lista_eventos[pygame.K_RIGHT] and self.jugador.rectangulo.right < 1190 - self.jugador.velocidad):
             self.jugador.accion = "derecha"  
 
         elif (lista_eventos[pygame.K_LEFT] and self.jugador.rectangulo.left >  20 ):
@@ -238,9 +251,14 @@ class Nivel:
         self.jugador.murio = coalicion_enemigo(self.enemigos,self.lados_personaje,self.listas_trampas)
         
         if self.jugador.murio == True:
-
-            self.jugador.accion = "muriendo"
-            self.contador_muertes += 1
+            
+            tiempo = time.time()
+            
+            if tiempo - ultima_colision >= retraso_colision:
+                self.jugador.accion = "muriendo"
+                self.contador_muertes += 1
+                ultima_colision = tiempo
+                
         
         if self.segundos == 60 or self.lista_vidas == []:
             self.tiempo = "terminado"
@@ -258,20 +276,21 @@ class Nivel:
         if get_mode() == True:
             
             mostrar_lados_1(self.lista_plataformas,self.enemigos,self.lados_personaje,self.listas_trampas,self._slave)
-
+        
+            if self.boss != None:
+                for boss in self.lista_boss:
+                    for lado in boss["lados"]:
+                        pygame.draw.rect(self._slave,"red",boss["lados"][lado],2)
+        
     def mostrar_resultado(self):
         
-        if self.jugador.puntaje > 300 and len(self.lista_vidas) > 0:
+        if self.jugador.puntaje > self.limite_ganar and len(self.lista_vidas) > 0:
         
-            mensaje_final = self.fuente_final.render(f"YOU WIN",True,("white"))
-            
-            self._slave.blit(mensaje_final,(600/2 + 100, 200))
+            self._slave.blit(self.win,(600/2 + 200,200))
 
         else:
-            
-            mensaje_final = self.fuente_final.render(f"YOU LOSE",True,("white"))
                 
-            self._slave.blit(mensaje_final,(600/2 + 100, 200))
+            self._slave.blit(self.lose,(600/2 + 200, 200))
         
         pygame.display.flip()
         
@@ -288,7 +307,8 @@ class Nivel:
         except:
             print("hubo un error al escribir los datos de la partida")
   
-
+ultima_colision = 0
+retraso_colision = 4.0
 
 
 ###########

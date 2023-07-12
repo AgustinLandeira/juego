@@ -86,10 +86,9 @@ class NivelUno(Nivel):
         muertes = 0
         
         path = "parcial_juego\datos_partida\\nivel_1.json"
-            
+    
         super().__init__(pantalla, personaje_principal, lista_plataformas, fondo, lados_personaje,
                         plataformas_creadas, listas_trampas, enemigos, lista_enemigos_animaciones, 
                         lista_anillos,anillos_creados, items_creados, lista_vacia, lista_vidas, 
                         lista_animaciones,tiempo,muertes,lista_de_bombarderos,lista_proyectiles,boss,
-                        lista_boss,vidas_boss,path)       
-                
+                        lista_boss,vidas_boss,path,300)

@@ -26,7 +26,7 @@ class NivelDos(Nivel):
         pantalla.blit(fondo,(0,0))
 
         #SONIDO PARA EL FONDO
-        crear_sonido_fondo("recursos de mi juego\sonidos\sonic-gumball.mp3",-1,0.1)
+        crear_sonido_fondo("recursos de mi juego\sonidos\sonic-sth.mp3",-1,0.1)
 
         #PERSONAJE   
 
@@ -36,7 +36,7 @@ class NivelDos(Nivel):
 
         reescalar_imagen(lista_animaciones,36,45)
 
-        personaje_principal = personaje(h/2 - 120,329,20,0,-27,27,4,"quieto",False)
+        personaje_principal = personaje(h/2 - 90,329,20,0,-27,27,4,"quieto",False)
 
         lados_personaje = obtener_rectangulos(personaje_principal.rectangulo)
 
@@ -88,5 +88,5 @@ class NivelDos(Nivel):
                         plataformas_creadas, listas_trampas, enemigos, lista_enemigos_animaciones, 
                         lista_anillos,anillos_creados, items_creados, lista_vacia, lista_vidas, 
                         lista_animaciones,tiempo,muertes,lista_de_bombarderos,lista_proyectiles,boss,
-                        lista_boss,vidas_boss,path)       
+                        lista_boss,vidas_boss,path,500)       
                 
