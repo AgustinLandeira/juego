@@ -20,7 +20,7 @@ class formMenuPlay(Form):
         self._slave = aux_image
         self.nivel1_desbloqueado = True
         self.nivel2_desbloqueado = False
-        self.nivel3_desbloqueado = False #
+        self.nivel3_desbloqueado = False 
         self.primera_vuelta = False
         self.path = "recursos de mi juego\interfaz\HITE_sfx#11 (SFX_10_menu).wav"
         

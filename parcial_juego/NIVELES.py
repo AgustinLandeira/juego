@@ -40,7 +40,7 @@ class Nivel:
         self.ultima_colision = 0
         self.retraso_colision = 2.0
         self.contador_muertes = muertes
-        self.aclaracion = pygame.font.SysFont("pixel-font", 40)
+        self.aclaracion = pygame.font.SysFont("pixel-font", 30)
         self.lista_vacia = False
         self.segundos_pasados = ""
         self.lista_proyectiles = lista_proyectiles
@@ -106,7 +106,7 @@ class Nivel:
             if  self.segundos < 11 :
             
                 objetivo = self.aclaracion.render(f"""Mision: agarra los anillos para llegar a 300 puntos como minimo para pasar al siguiente nivel""",True,("black"))
-                self._slave.blit(objetivo,(300,10))
+                self._slave.blit(objetivo,(280,10))
 
             if self.segundos >= 15 and self.segundos < 30 or self.segundos > 40 and self.segundos <59:
                 mover_objeto(self.anillos_creados,self.items)

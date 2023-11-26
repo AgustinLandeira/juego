@@ -36,7 +36,7 @@ class NivelDos(Nivel):
 
         reescalar_imagen(lista_animaciones,36,45)
 
-        personaje_principal = personaje(h/2 - 90,329,20,0,-27,27,4,"quieto",False)
+        personaje_principal = personaje(h/2 - 280,329,20,0,-27,27,4,"quieto",False)
 
         lados_personaje = obtener_rectangulos(personaje_principal.rectangulo)
 
